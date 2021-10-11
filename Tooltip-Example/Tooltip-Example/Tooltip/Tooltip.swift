@@ -9,7 +9,7 @@ struct Tooltip {
 	let position: TooltipBubblePosition
 
 	enum TooltipBubblePosition {
-		case up
+		case top
 		case center
 		case bottom
 	}

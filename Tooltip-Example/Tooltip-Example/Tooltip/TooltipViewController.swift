@@ -17,6 +17,7 @@ class TooltipViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
 		mainView?.layoutDimmingView(with: UIScreen.main.bounds.size)
 
 		tooltips.forEach { (hint) in
@@ -62,12 +63,11 @@ class TooltipViewController: UIViewController {
 		default: break
 		}
 
-		let bottom = UIDevice.current.hasNotch ? bottomPadding : 26
-		let popup = TooltipBubbleView(tooltip: hint, arrowOffset: arrowOffset, bottomPadding: bottom)
+		let popup = TooltipBubbleView(tooltip: hint, arrowOffset: arrowOffset, bottomPadding: bottomPadding)
         popup.dismissButton.addTarget(self, action: #selector(handleOkOrDismiss(_:)), for: .touchUpInside)
 		mainView?.position(popup)
     }
-	
+
 	@objc
 	private func handleDimmingViewTap() {
 		nextBubble()

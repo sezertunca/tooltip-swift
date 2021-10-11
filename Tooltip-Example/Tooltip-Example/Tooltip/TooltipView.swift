@@ -34,7 +34,14 @@ class TooltipView: UIView {
         dimmingView.alpha = dimmingViewFadedOutAlpha
 
 		addSubview(dimmingView)
-		dimmingView.fillSuperView()
+
+		dimmingView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			dimmingView.topAnchor.constraint(equalTo: topAnchor),
+			dimmingView.leftAnchor.constraint(equalTo: leftAnchor),
+			dimmingView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			dimmingView.rightAnchor.constraint(equalTo: rightAnchor)
+		])
     }
 
 	func displayDimmingView() {
@@ -69,42 +76,43 @@ class TooltipView: UIView {
 
 		bubbles.append(popup)
 
-		popup.infoView.rounded(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], radius: 12)
-
 		addSubview(popup)
 
 		let screenWidth = UIScreen.main.bounds.size.width
 
 		let popupWidth: CGFloat = screenWidth * 0.9
 
-		let horizontalPadding: CGFloat = 25
 
-		popup.constrainWidth(constant: popupWidth)
-		popup.constrainHeight(constant: 199)
+		popup.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			popup.widthAnchor.constraint(equalToConstant: popupWidth),
+			popup.heightAnchor.constraint(equalToConstant: 199),
+		])
 
 		switch popup.position {
 
-		case .up:
-			popup.anchor(top: safeAreaLayoutGuide.topAnchor,
-						 left: nil,
-						 bottom: nil,
-						 right: nil,
-						 padding: .init(top: popup.verticalPadding + 40, left: horizontalPadding, bottom: 0, right: horizontalPadding))
+		case .top:
 
-			popup.anchorCenterXToSuperview()
+			NSLayoutConstraint.activate([
+				popup.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: popup.verticalPadding + 40),
+				popup.centerXAnchor.constraint(equalTo: centerXAnchor),
+			])
 
 		case .bottom:
-			popup.anchor(top: nil,
-						 left: nil,
-						 bottom: safeAreaLayoutGuide.bottomAnchor,
-						 right: nil,
-						 padding: .init(top: 0, left: horizontalPadding, bottom: popup.verticalPadding, right: horizontalPadding))
 
-			popup.anchorCenterXToSuperview()
+			NSLayoutConstraint.activate([
+				popup.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -popup.verticalPadding),
+				popup.centerXAnchor.constraint(equalTo: centerXAnchor),
+			])
 
 		case .center:
 
-			popup.centerInSuperView(size: .init(width: screenWidth.percentage(90), height: screenWidth))
+			NSLayoutConstraint.activate([
+				popup.centerYAnchor.constraint(equalTo: centerYAnchor),
+				popup.centerXAnchor.constraint(equalTo: centerXAnchor),
+				popup.widthAnchor.constraint(equalToConstant: screenWidth * 0.9),
+				popup.heightAnchor.constraint(equalToConstant: screenWidth),
+			])
 		}
 	}
 }
